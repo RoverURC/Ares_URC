@@ -36,10 +36,6 @@ MainWindow::MainWindow(QWidget *parent) :
   connect(joypadRoverRefresh,SIGNAL(timeout()),myJoystickRover,SLOT(getData()));
   connect(joypadManipulatorRefresh,SIGNAL(timeout()),myJoystickManipulator,SLOT(getData()));
 
-  //Timer to send data to rover and manipulator
-  roverRefresh = new QTimer(this);
-  manipulatorRefresh = new QTimer(this);
-
   ui->setupUi(this);
 
   //Manipulator and rover objects that inherits from ModbusServer

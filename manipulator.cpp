@@ -16,7 +16,6 @@ int const uartAngleIndex = 4;
 Manipulator::Manipulator(QObject *parent ) :
   ModbusClient(parent)
 {
-
   requestCounter = 0;
   goodResponseCounter = 0;
 

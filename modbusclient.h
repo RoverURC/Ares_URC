@@ -70,13 +70,10 @@ private:
   bool proceedWriteMultipleRegistersResponse();
   bool proceedReadHoldingRegistersResponse();
 
-
-
   QTimer *responseTimer;
   int holdingRegistersSize;
   int responseTimerTimeout;
   quint8 transactionID;
-
 
   quint16 *holdingRegisters;
   quint8 waitingFunctionCode;
