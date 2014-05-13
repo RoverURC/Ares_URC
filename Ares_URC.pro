@@ -21,6 +21,7 @@ SOURCES += main.cpp\
     rover.cpp \
     manipulator.cpp \
     widgetgps.cpp \
+    joystickviewrover.cpp
 
 HEADERS  += mainwindow.h \
     modbusclient.h \
@@ -33,7 +34,9 @@ HEADERS  += mainwindow.h \
     manipulator.h \
     motorcodes.h \
     widgetgps.h \
+    joystickviewrover.h
 
-FORMS    += mainwindow.ui
+FORMS    += mainwindow.ui \
+    joystickviewrover.ui
 
 LIBS += -lSDL

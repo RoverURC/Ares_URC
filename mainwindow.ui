@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>870</width>
-    <height>587</height>
+    <width>860</width>
+    <height>657</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -1744,8 +1744,8 @@
            <widget class="QWidget" name="layoutWidget">
             <property name="geometry">
              <rect>
-              <x>330</x>
-              <y>310</y>
+              <x>560</x>
+              <y>430</y>
               <width>141</width>
               <height>42</height>
              </rect>
@@ -1805,172 +1805,244 @@
              </item>
             </layout>
            </widget>
-           <widget class="JoystickView" name="widgetJoypadRover" native="true">
-            <property name="geometry">
-             <rect>
-              <x>200</x>
-              <y>210</y>
-              <width>201</width>
-              <height>71</height>
-             </rect>
-            </property>
-            <property name="autoFillBackground">
-             <bool>false</bool>
-            </property>
-           </widget>
-           <widget class="QWidget" name="layoutWidget">
+           <widget class="QWidget" name="">
             <property name="geometry">
              <rect>
               <x>10</x>
               <y>10</y>
-              <width>152</width>
-              <height>173</height>
+              <width>336</width>
+              <height>175</height>
              </rect>
             </property>
-            <layout class="QVBoxLayout" name="verticalLayout_30">
-             <property name="spacing">
-              <number>0</number>
-             </property>
+            <layout class="QHBoxLayout" name="horizontalLayout_19">
              <item>
-              <widget class="QLabel" name="label_58">
-               <property name="text">
-                <string>Manipulator:</string>
+              <layout class="QVBoxLayout" name="verticalLayout_30">
+               <property name="spacing">
+                <number>0</number>
                </property>
-              </widget>
-             </item>
-             <item>
-              <layout class="QHBoxLayout" name="horizontalLayout_16">
                <item>
-                <layout class="QVBoxLayout" name="verticalLayout_50">
-                 <property name="spacing">
-                  <number>0</number>
+                <widget class="QLabel" name="label_58">
+                 <property name="text">
+                  <string>Manipulator:</string>
                  </property>
+                </widget>
+               </item>
+               <item>
+                <layout class="QHBoxLayout" name="horizontalLayout_16">
                  <item>
-                  <widget class="QLabel" name="label_59">
-                   <property name="text">
-                    <string>Axis0</string>
+                  <layout class="QVBoxLayout" name="verticalLayout_50">
+                   <property name="spacing">
+                    <number>0</number>
                    </property>
-                  </widget>
+                   <item>
+                    <widget class="QLabel" name="label_59">
+                     <property name="text">
+                      <string>Axis0</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="QLabel" name="label_60">
+                     <property name="text">
+                      <string>Axis1</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="QLabel" name="label_61">
+                     <property name="text">
+                      <string>Axis2</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="QLabel" name="label_62">
+                     <property name="text">
+                      <string>Axis3</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="QLabel" name="label_63">
+                     <property name="text">
+                      <string>UartA</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="QLabel" name="label_64">
+                     <property name="text">
+                      <string>Motor</string>
+                     </property>
+                    </widget>
+                   </item>
+                  </layout>
                  </item>
                  <item>
-                  <widget class="QLabel" name="label_60">
-                   <property name="text">
-                    <string>Axis1</string>
+                  <layout class="QVBoxLayout" name="verticalLayout_29">
+                   <property name="spacing">
+                    <number>0</number>
                    </property>
-                  </widget>
-                 </item>
-                 <item>
-                  <widget class="QLabel" name="label_61">
-                   <property name="text">
-                    <string>Axis2</string>
-                   </property>
-                  </widget>
-                 </item>
-                 <item>
-                  <widget class="QLabel" name="label_62">
-                   <property name="text">
-                    <string>Axis3</string>
-                   </property>
-                  </widget>
-                 </item>
-                 <item>
-                  <widget class="QLabel" name="label_63">
-                   <property name="text">
-                    <string>UartA</string>
-                   </property>
-                  </widget>
-                 </item>
-                 <item>
-                  <widget class="QLabel" name="label_64">
-                   <property name="text">
-                    <string>Motor</string>
-                   </property>
-                  </widget>
+                   <item>
+                    <widget class="QProgressBar" name="progressBarManipulatorAxis0">
+                     <property name="value">
+                      <number>24</number>
+                     </property>
+                     <property name="alignment">
+                      <set>Qt::AlignCenter</set>
+                     </property>
+                     <property name="format">
+                      <string>%v</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="QProgressBar" name="progressBarManipulatorAxis1">
+                     <property name="value">
+                      <number>24</number>
+                     </property>
+                     <property name="alignment">
+                      <set>Qt::AlignCenter</set>
+                     </property>
+                     <property name="format">
+                      <string>%v</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="QProgressBar" name="progressBarManipulatorAxis2">
+                     <property name="value">
+                      <number>24</number>
+                     </property>
+                     <property name="alignment">
+                      <set>Qt::AlignCenter</set>
+                     </property>
+                     <property name="format">
+                      <string>%v</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="QProgressBar" name="progressBarManipulatorAxis3">
+                     <property name="value">
+                      <number>24</number>
+                     </property>
+                     <property name="alignment">
+                      <set>Qt::AlignCenter</set>
+                     </property>
+                     <property name="format">
+                      <string>%v</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="QProgressBar" name="progressBarManipulatorAxis4">
+                     <property name="value">
+                      <number>24</number>
+                     </property>
+                     <property name="alignment">
+                      <set>Qt::AlignCenter</set>
+                     </property>
+                     <property name="format">
+                      <string>%v</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="QProgressBar" name="progressBarManipulatorAxis5">
+                     <property name="value">
+                      <number>24</number>
+                     </property>
+                     <property name="alignment">
+                      <set>Qt::AlignCenter</set>
+                     </property>
+                     <property name="format">
+                      <string>%v</string>
+                     </property>
+                    </widget>
+                   </item>
+                  </layout>
                  </item>
                 </layout>
                </item>
+              </layout>
+             </item>
+             <item>
+              <layout class="QVBoxLayout" name="verticalLayout_53">
+               <property name="spacing">
+                <number>0</number>
+               </property>
                <item>
-                <layout class="QVBoxLayout" name="verticalLayout_29">
+                <widget class="QLabel" name="label_65">
+                 <property name="text">
+                  <string>Rover:</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <layout class="QHBoxLayout" name="horizontalLayout_18">
                  <property name="spacing">
                   <number>0</number>
                  </property>
                  <item>
-                  <widget class="QProgressBar" name="progressBarManipulatorAxis0">
-                   <property name="value">
-                    <number>24</number>
+                  <layout class="QVBoxLayout" name="verticalLayout_52">
+                   <property name="spacing">
+                    <number>0</number>
                    </property>
-                   <property name="alignment">
-                    <set>Qt::AlignCenter</set>
-                   </property>
-                   <property name="format">
-                    <string>%v</string>
-                   </property>
-                  </widget>
+                   <item>
+                    <widget class="QLabel" name="label_48">
+                     <property name="text">
+                      <string>LeftPWM</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="QLabel" name="label_49">
+                     <property name="text">
+                      <string>RightPWM</string>
+                     </property>
+                    </widget>
+                   </item>
+                  </layout>
                  </item>
                  <item>
-                  <widget class="QProgressBar" name="progressBarManipulatorAxis1">
-                   <property name="value">
-                    <number>24</number>
+                  <layout class="QVBoxLayout" name="verticalLayout_51">
+                   <property name="spacing">
+                    <number>0</number>
                    </property>
-                   <property name="alignment">
-                    <set>Qt::AlignCenter</set>
-                   </property>
-                   <property name="format">
-                    <string>%v</string>
-                   </property>
-                  </widget>
-                 </item>
-                 <item>
-                  <widget class="QProgressBar" name="progressBarManipulatorAxis2">
-                   <property name="value">
-                    <number>24</number>
-                   </property>
-                   <property name="alignment">
-                    <set>Qt::AlignCenter</set>
-                   </property>
-                   <property name="format">
-                    <string>%v</string>
-                   </property>
-                  </widget>
-                 </item>
-                 <item>
-                  <widget class="QProgressBar" name="progressBarManipulatorAxis3">
-                   <property name="value">
-                    <number>24</number>
-                   </property>
-                   <property name="alignment">
-                    <set>Qt::AlignCenter</set>
-                   </property>
-                   <property name="format">
-                    <string>%v</string>
-                   </property>
-                  </widget>
-                 </item>
-                 <item>
-                  <widget class="QProgressBar" name="progressBarManipulatorAxis4">
-                   <property name="value">
-                    <number>24</number>
-                   </property>
-                   <property name="alignment">
-                    <set>Qt::AlignCenter</set>
-                   </property>
-                   <property name="format">
-                    <string>%v</string>
-                   </property>
-                  </widget>
-                 </item>
-                 <item>
-                  <widget class="QProgressBar" name="progressBarManipulatorAxis5">
-                   <property name="value">
-                    <number>24</number>
-                   </property>
-                   <property name="alignment">
-                    <set>Qt::AlignCenter</set>
-                   </property>
-                   <property name="format">
-                    <string>%v</string>
-                   </property>
-                  </widget>
+                   <item>
+                    <widget class="QProgressBar" name="progressBarLeftPWM">
+                     <property name="maximum">
+                      <number>1000</number>
+                     </property>
+                     <property name="value">
+                      <number>0</number>
+                     </property>
+                     <property name="alignment">
+                      <set>Qt::AlignCenter</set>
+                     </property>
+                     <property name="format">
+                      <string>%v</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="QProgressBar" name="progressBarRightPWM">
+                     <property name="maximum">
+                      <number>1000</number>
+                     </property>
+                     <property name="value">
+                      <number>0</number>
+                     </property>
+                     <property name="alignment">
+                      <set>Qt::AlignCenter</set>
+                     </property>
+                     <property name="format">
+                      <string>%v</string>
+                     </property>
+                    </widget>
+                   </item>
+                  </layout>
                  </item>
                 </layout>
                </item>
@@ -1978,105 +2050,50 @@
              </item>
             </layout>
            </widget>
-           <widget class="JoystickView" name="widgetJoypadManipulator" native="true">
-            <property name="geometry">
-             <rect>
-              <x>170</x>
-              <y>10</y>
-              <width>201</width>
-              <height>71</height>
-             </rect>
-            </property>
-            <property name="autoFillBackground">
-             <bool>false</bool>
-            </property>
-           </widget>
            <widget class="QWidget" name="">
             <property name="geometry">
              <rect>
               <x>10</x>
               <y>190</y>
-              <width>182</width>
-              <height>85</height>
+              <width>461</width>
+              <height>291</height>
              </rect>
             </property>
-            <layout class="QVBoxLayout" name="verticalLayout_53">
-             <property name="spacing">
-              <number>0</number>
-             </property>
+            <layout class="QHBoxLayout" name="horizontalLayout_20">
              <item>
-              <widget class="QLabel" name="label_65">
-               <property name="text">
-                <string>Rover:</string>
+              <widget class="JoystickView" name="widgetJoypadManipulator" native="true">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="minimumSize">
+                <size>
+                 <width>100</width>
+                 <height>100</height>
+                </size>
+               </property>
+               <property name="autoFillBackground">
+                <bool>false</bool>
                </property>
               </widget>
              </item>
              <item>
-              <layout class="QHBoxLayout" name="horizontalLayout_18">
-               <property name="spacing">
-                <number>0</number>
+              <widget class="JoystickViewRover" name="widgetJoypadRover" native="true">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
                </property>
-               <item>
-                <layout class="QVBoxLayout" name="verticalLayout_52">
-                 <property name="spacing">
-                  <number>0</number>
-                 </property>
-                 <item>
-                  <widget class="QLabel" name="label_48">
-                   <property name="text">
-                    <string>LeftPWM</string>
-                   </property>
-                  </widget>
-                 </item>
-                 <item>
-                  <widget class="QLabel" name="label_49">
-                   <property name="text">
-                    <string>RightPWM</string>
-                   </property>
-                  </widget>
-                 </item>
-                </layout>
-               </item>
-               <item>
-                <layout class="QVBoxLayout" name="verticalLayout_51">
-                 <property name="spacing">
-                  <number>0</number>
-                 </property>
-                 <item>
-                  <widget class="QProgressBar" name="progressBarLeftPWM">
-                   <property name="maximum">
-                    <number>1000</number>
-                   </property>
-                   <property name="value">
-                    <number>0</number>
-                   </property>
-                   <property name="alignment">
-                    <set>Qt::AlignCenter</set>
-                   </property>
-                   <property name="format">
-                    <string>%v</string>
-                   </property>
-                  </widget>
-                 </item>
-                 <item>
-                  <widget class="QProgressBar" name="progressBarRightPWM">
-                   <property name="maximum">
-                    <number>1000</number>
-                   </property>
-                   <property name="value">
-                    <number>0</number>
-                   </property>
-                   <property name="alignment">
-                    <set>Qt::AlignCenter</set>
-                   </property>
-                   <property name="format">
-                    <string>%v</string>
-                   </property>
-                  </widget>
-                 </item>
-                </layout>
-               </item>
-              </layout>
+               <property name="minimumSize">
+                <size>
+                 <width>300</width>
+                 <height>100</height>
+                </size>
+               </property>
+              </widget>
              </item>
             </layout>
            </widget>
@@ -3710,7 +3727,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>870</width>
+     <width>860</width>
      <height>25</height>
     </rect>
    </property>
@@ -3748,6 +3765,12 @@
    <class>WidgetGPS</class>
    <extends>QGraphicsView</extends>
    <header location="global">widgetgps.h</header>
+  </customwidget>
+  <customwidget>
+   <class>JoystickViewRover</class>
+   <extends>QWidget</extends>
+   <header>joystickviewrover.h</header>
+   <container>1</container>
   </customwidget>
  </customwidgets>
  <resources/>

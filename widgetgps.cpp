@@ -41,7 +41,6 @@ void WidgetGPS::paintEvent(QPaintEvent *event){
 }
 
 void WidgetGPS::resizeEvent(QResizeEvent *){
-
 }
 
 void WidgetGPS::setTargetCoordinate(QGeoCoordinate coordinate){
@@ -49,8 +48,8 @@ void WidgetGPS::setTargetCoordinate(QGeoCoordinate coordinate){
 }
 MyPoint WidgetGPS::calculateXY(QGeoCoordinate coordinate){
   MyPoint point(0,0);
-  point.x = coordinate.longitude()*10000;
-  point.y = coordinate.latitude()*10000;
+  point.x = coordinate.longitude()*1000;
+  point.y = coordinate.latitude()*1000;
   return point;
 }
 

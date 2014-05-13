@@ -80,14 +80,30 @@ void Rover::interpretJoypadButton(int id, bool status){
 
 //Set speed and direction of each engine
 void Rover::interpretJoypadAxis(int id, qint16 value){
-  if(id==leftAxis){
-    qint16 valuePWM = ((double)value/std::numeric_limits<quint16>::max()) * 1000;
-    setLeftPWM(valuePWM);
-  }
-  if(id==rightAxis){
-    qint16 valuePWM = ((double)value/std::numeric_limits<quint16>::max()) * 1000;
-    setRightPWM(valuePWM);
-  }
+//NEW ONE
+
+  if(id == 1){
+      qint16 valuePWM = (float)value/32767*(-1000);
+      setLeftPWM(valuePWM);
+      setRightPWM(valuePWM);
+    }
+  else if(id == 2){
+      qint16 valuePWM = (float)value/32767*(1000);
+      setLeftPWM(valuePWM);
+      setRightPWM((-1)*valuePWM);
+    }
+
+
+//OLD ONE
+
+//  if(id==leftAxis){
+//    qint16 valuePWM = ((double)value/std::numeric_limits<quint16>::max()) * 1000;
+//    setLeftPWM(valuePWM);
+//  }
+//  if(id==rightAxis){
+//    qint16 valuePWM = ((double)value/std::numeric_limits<quint16>::max()) * 1000;
+//    setRightPWM(valuePWM);
+//  }
 }
 void Rover::proceedResponse(bool status, qint8 errorCode){
   if(status){

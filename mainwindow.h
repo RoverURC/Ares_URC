@@ -10,6 +10,7 @@
 #include "qjoystick.h"
 #include "rover.h"
 #include "manipulator.h"
+#include <joystickviewrover.h>
 #include <QGeoCoordinate>
 namespace Ui {
   class MainWindow;
