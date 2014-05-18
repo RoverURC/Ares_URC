@@ -97,6 +97,9 @@ MainWindow::MainWindow(QWidget *parent) :
   connect(tempTimer,SIGNAL(timeout()),this,SLOT(updateManipulatorDisplayData()));
   connect(tempTimer,SIGNAL(timeout()),this,SLOT(updateRoverDisplayData()));
   tempTimer->start(200);
+
+  //GPS
+  connect(this->ui->pushButtonResetGPS,SIGNAL(clicked()),ui->widgetGPS,SLOT(reset()));
 }
 
 void MainWindow::connectToHostManipulator(){

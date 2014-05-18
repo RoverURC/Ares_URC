@@ -27,13 +27,13 @@ void WidgetGPS::paintEvent(QPaintEvent *event){
   for (int i=0 ; i<coordinatesList.size(); i++){
     MyPoint point = calculateXY(coordinatesList[i]);
     myScene->addEllipse(point.x,point.y,0.3,0.3,QPen(Qt::transparent),QBrush(Qt::black));
-    //qDebug()<<"PX"<<point.x;
-    //qDebug()<<"PY"<<point.y;
+    qDebug()<<"PX"<<point.x;
+    qDebug()<<"PY"<<point.y;
   }
   MyPoint point = calculateXY(targetCoordinate);
-  myScene->addEllipse(point.x,point.y, 0.3, 0.3,QPen(Qt::transparent),QBrush(Qt::red));
-  //qDebug()<<"AX"<<point.x;
-  //qDebug()<<"AY"<<point.y;
+  myScene->addEllipse(point.x,point.y, 0.3,0.3,QPen(Qt::transparent),QBrush(Qt::red));
+  qDebug()<<"AX"<<point.x;
+  qDebug()<<"AY"<<point.y;
 
   setScene(myScene);
   QGraphicsView::fitInView(scene()->sceneRect(), Qt::KeepAspectRatio );
