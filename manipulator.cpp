@@ -80,7 +80,6 @@ void Manipulator::updateManipulatorData(){
 }
 
 void Manipulator::sendManipulatorData(){
-
   writeMultipleRegisters(0,6);
 }
 
