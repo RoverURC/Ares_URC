@@ -50,7 +50,7 @@
  * Motor Control
     31  Drive Mode
     32	Motor 1,2,3 PWM
-    33	Motor 4,5,6 PWM
+    33	Motor 4,5,6f PWM
 
  * GPS Receiver
   * Time
@@ -87,13 +87,9 @@ class Rover : public ModbusClient
   Q_OBJECT
 public:
 
-  static int const leftAxis;
-  static int const rightAxis;
-  static int const numberOfSpeedButtons;
-  static int const speedButtonsIDTable[];
-  static int const speedButtonsSpeedsTable[];
-
   explicit Rover(QObject *parent = 0);
+  ~Rover();
+
   int getGoodResponseNumber() const {return goodResponseCounter;}
   int getRequestNumber() const { return requestCounter;}
 
@@ -104,19 +100,24 @@ signals:
 public slots:
   //Sends and reads RoverData
   void updateRoverData();
+
   void interpretJoypadButton(int id, bool status);
   void interpretJoypadAxis(int id, qint16 value);
 
 private slots:
   void proceedResponse(bool status, qint8 errorCode);
 private:
-  int goodResponseCounter;
-  int requestCounter;
   void setLeftPWM(qint16 value);
   void setRightPWM(qint16 value);
   void sendRoverData();
   void readRoverData();
-  void readGPSData();
+
+  void setManipulatorAxis(int id, int value);
+  bool *axisStatus;
+  int lastAxisValue;
+  void clearManipulatorAxis();
+  int goodResponseCounter;
+  int requestCounter;
 };
 
 #endif // ROVER_H

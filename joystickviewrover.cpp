@@ -15,6 +15,9 @@ JoystickViewRover::~JoystickViewRover()
 
 void JoystickViewRover::changeButtonState(int id, bool status){
   switch (id) {
+    case 0:
+      ui->checkBoxButton0->setChecked(status);
+      break;
     case 1:
       ui->checkBoxButton1->setChecked(status);
       break;

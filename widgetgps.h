@@ -8,11 +8,13 @@
 
 #include <QGraphicsScene>
 
+#include <QTcpSocket>
 class MyPoint{
 public:
   MyPoint(double x,double y);
   double x;
   double y;
+  static MyPoint calculateXY(QGeoCoordinate coordinate);
 };
 
 class WidgetGPS : public QGraphicsView
@@ -24,17 +26,16 @@ signals:
 
 public slots:
   void reset();
-  void addCoordinates(QGeoCoordinate coordinate);
+
+  void addCoordinate(QGeoCoordinate coordinate);
   void setTargetCoordinate(QGeoCoordinate coordinate);
+
 protected:
   void paintEvent(QPaintEvent *event);
-  void resizeEvent(QResizeEvent *);
 private:
+  QTcpSocket *myTcpSocket;
   QList<QGeoCoordinate> coordinatesList;
   QGeoCoordinate targetCoordinate;
-  MyPoint calculateXY(QGeoCoordinate coordinate);
-
-  QGeoLocation  *myGeoLocation;
   QGraphicsScene *myScene;
 };
 

@@ -15,8 +15,6 @@ class ConnectionStatusWidget : public QWidget
 public:
   explicit ConnectionStatusWidget(QWidget *parent = 0);
 
-signals:
-  void emitTrue(bool a);
 protected:
   void paintEvent(QPaintEvent *);
 public slots:

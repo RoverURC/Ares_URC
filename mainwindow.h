@@ -12,6 +12,7 @@
 #include "manipulator.h"
 #include <joystickviewrover.h>
 #include <QGeoCoordinate>
+#include <QTcpSocket>
 namespace Ui {
   class MainWindow;
 }
@@ -25,10 +26,14 @@ public:
   ~MainWindow();
   QTimer *tempTimer;
 public slots:
+  void getGPS();
+  void readGPSFromUser();
   void createManipulatorJoystick();
   void createRoverJoystick();
   void updateRoverDisplayData();
   void updateManipulatorDisplayData();
+private slots:
+  void readFromGPS();
 private slots:
   void connectToHostManipulator();
   void connectToHostRover();
@@ -36,6 +41,7 @@ private slots:
   void disconnectFromHostRover();
 
 private:
+  QTcpSocket *myTcpSocket;
   Ui::MainWindow *ui;
 
   ModbusServer *myModbusServer;

@@ -2,7 +2,7 @@
 
 // Axis 0 (Pin PWM 0,1), Axis 1 (Pin PWM 2), Axis 2 (Pin PWM 3), Axis 3 (Pin PWM 4), Axis 4 UART, Axis 5 Motor
 int const Manipulator::axisNumber = 6;
-int const Manipulator::axisInit[] = { 256, 256, 256, 256, 0, 0};
+int const Manipulator::axisInit[] = { 512, 256, 256, 256, 0, 0};
 int const Manipulator::axisMax[] = { 512, 512, 512, 512, 300, 100};
 int const Manipulator::axisMin[] = { 256, 140, 256, 256, 0, -100};
 int const Manipulator::axisButtonId[] = { 0, 1, 2, 3, 4, 5};

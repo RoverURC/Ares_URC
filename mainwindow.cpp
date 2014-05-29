@@ -27,6 +27,7 @@ MainWindow::MainWindow(QWidget *parent) :
   QMainWindow(parent),
   ui(new Ui::MainWindow)
 {
+  myTcpSocket = NULL;
   myJoystickRover = new QJoystick(this);
   myJoystickManipulator = new QJoystick(this);
 
@@ -99,7 +100,9 @@ MainWindow::MainWindow(QWidget *parent) :
   tempTimer->start(200);
 
   //GPS
-  connect(this->ui->pushButtonResetGPS,SIGNAL(clicked()),ui->widgetGPS,SLOT(reset()));
+  connect(this->ui->pushButtonResetGPS,SIGNAL(clicked()),this->ui->widgetGPS,SLOT(reset()));
+  connect(this->ui->pushButtonGetGPSRover,SIGNAL(clicked()),this,SLOT(getGPS()));
+  connect(this->ui->pushButtonGetGPSUser,SIGNAL(clicked()),this,SLOT(readGPSFromUser()));
 }
 
 void MainWindow::connectToHostManipulator(){
@@ -212,8 +215,6 @@ void MainWindow::updateRoverDisplayData(){
   this->ui->lineEditRoverResponseNumber->setText(QString::number(myRover->getGoodResponseNumber()));
   this->ui->lineEditRoverBadResponseNumber->setText(QString::number(myRover->getRequestNumber()-myRover->getGoodResponseNumber()));
 
-  quint16 motorsCurrent = 0;
-
   //PWM Values:
   this->ui->progressBarLeftPWM->setValue((qint16)myRover->getLeftPWM());
   this->ui->progressBarRightPWM->setValue((qint16)myRover->getRightPWM());
@@ -229,8 +230,6 @@ void MainWindow::updateRoverDisplayData(){
     myRover->getRegister(4,value); //AccV
     this->ui->progressBarMotor16_AccV->setValue(value);
     myRover->getRegister(5,value); //Current
-    this->ui->progressBarMotor16_Current->setValue(value);
-    motorsCurrent += value;
   }
   //Motor 17
   {
@@ -244,8 +243,6 @@ void MainWindow::updateRoverDisplayData(){
     myRover->getRegister(9,value); //AccV
     this->ui->progressBarMotor17_AccV->setValue(value);
     myRover->getRegister(10,value); //Current
-    this->ui->progressBarMotor17_Current->setValue(value);
-    motorsCurrent += value;
   }
   //Motor 18
   {
@@ -259,8 +256,6 @@ void MainWindow::updateRoverDisplayData(){
     myRover->getRegister(14,value); //AccV
     this->ui->progressBarMotor18_AccV->setValue(value);
     myRover->getRegister(15,value); //Current
-    this->ui->progressBarMotor18_Current->setValue(value);
-    motorsCurrent += value;
   }
   //Motor 19
   {
@@ -274,8 +269,6 @@ void MainWindow::updateRoverDisplayData(){
     myRover->getRegister(19,value); //AccV
     this->ui->progressBarMotor19_AccV->setValue(value);
     myRover->getRegister(20,value); //Current
-    this->ui->progressBarMotor19_Current->setValue(value);
-    motorsCurrent += value;
   }
   //Motor 20
   {
@@ -289,11 +282,10 @@ void MainWindow::updateRoverDisplayData(){
     myRover->getRegister(24,value); //AccV
     this->ui->progressBarMotor20_AccV->setValue(value);
     myRover->getRegister(25,value); //Current
-    this->ui->progressBarMotor20_Current->setValue(value);
-    motorsCurrent += value;
   }
   //Motor 21
   {
+    qDebug()<<"Motor 21";
     quint16 value;
     myRover->getRegister(26,value); //5V
     this->ui->progressBarMotor21_5V->setValue(value);
@@ -303,123 +295,10 @@ void MainWindow::updateRoverDisplayData(){
     this->ui->progressBarMotor21_24V->setValue(value);
     myRover->getRegister(29,value); //AccV
     this->ui->progressBarMotor21_AccV->setValue(value);
-    myRover->getRegister(30,value); //Current
-    this->ui->progressBarMotor21_Current->setValue(value);
-    motorsCurrent += value;
   }
 
-  //Motors
-  {
-    this->ui->progressBarMotorsCurrent->setValue(motorsCurrent);
-    checkTelemetryValues();
-  }
-  //GPS
-  {
-    //Time
-    quint16 value;
-    myRover->getRegister(41,value);
-    this->ui->labelGpsHour->setText(QString::number(value));
-    myRover->getRegister(42,value);
-    this->ui->labelGpsMinute->setText(QString::number(value));
-    myRover->getRegister(43,value);
-    this->ui->labelGpsSecond->setText(QString::number(value));
+  checkTelemetryValues();
 
-    // Latitude
-    myRover->getRegister(46,value);
-    double latitudeDegrees = value;
-    this->ui->labelLatitudeDegrees->setText(QString::number(latitudeDegrees));
-
-    myRover->getRegister(47,value);
-    double latitudeMinutes = value;
-    this->ui->labelLatitudeMinutes->setText(QString::number(latitudeMinutes));
-
-    myRover->getRegister(48,value);
-    double latitudeSeconds = (double)value/10000 * 0.6;
-    this->ui->labelLatitudeSeconds->setText(QString::number(latitudeSeconds));
-
-    myRover->getRegister(49,value);
-    QChar designator = QChar(value);
-    this->ui->labelLatitudeDesignator->setText(QString(designator));
-    if(designator==QChar('N')){
-      actualGPSCoordinates.setLatitude(latitudeDegrees+latitudeMinutes/60 +latitudeSeconds/3600);
-    }
-    if(designator == QChar('S')){
-      actualGPSCoordinates.setLatitude((-1)*(latitudeDegrees+latitudeMinutes/60 +latitudeSeconds/3600));
-    }
-
-    //Longnitude
-    myRover->getRegister(50,value);
-    double longnitudeDegrees = value;
-    this->ui->labelLongnitudeDegrees->setText(QString::number(longnitudeDegrees));
-
-    myRover->getRegister(51,value);
-    double longnitudeMinutes = value;
-    this->ui->labelLongnitudeMinutes->setText(QString::number(longnitudeMinutes));
-
-    myRover->getRegister(52,value);
-    double longnitudeSeconds = (double)value/10000 * 0.6;;
-    this->ui->labelLongnitudeSeconds->setText(QString::number(longnitudeSeconds));
-
-    myRover->getRegister(53,value);
-    designator = QChar(value);
-    this->ui->labelLongnitudeDesignator->setText(designator);
-    if(designator == 'E'){
-      actualGPSCoordinates.setLongitude(longnitudeDegrees+longnitudeMinutes/60+longnitudeSeconds/3600);
-    }
-    if(designator == 'W'){
-        actualGPSCoordinates.setLongitude((-1)*(longnitudeDegrees+longnitudeMinutes/60+longnitudeSeconds/3600));
-    }
-
-
-    if(actualGPSCoordinates.longitude()<180 && actualGPSCoordinates.longitude()>-180 &&
-       actualGPSCoordinates.latitude()>-90 && actualGPSCoordinates.latitude()<90){
-      ui->widgetGPS->addCoordinates(actualGPSCoordinates);
-    }
-
-    //Read gps target from user
-    bool ok;
-      double latitude = ui->lineEditLatitudeDegrees->text().toDouble(&ok);
-    if(ok){
-      latitude += ui->lineEditLatitudeMinutes->text().toDouble(&ok)/60;
-    }
-    if(ok){
-      latitude +=ui->lineEditLatitudeSeconds->text().toDouble(&ok)/3600;
-    }
-    if(ok){
-      if(ui->lineEditLatitudeDesignator->text().data()[0] == 'S')
-        latitude *= (-1);
-      else if((QChar)ui->lineEditLatitudeDesignator->text().data()[0] == 'N')
-        ;
-      else
-        ok = false;
-    }
-    double longnitude;
-    if(ok){
-      longnitude = ui->lineEditLongnitudeDegrees->text().toDouble(&ok);
-    }
-    if(ok){
-      longnitude += ui->lineEditLongnitudeMinutes->text().toDouble(&ok)/60;
-    }
-    if(ok){
-      longnitude +=ui->lineEditLongnitudeSeconds->text().toDouble(&ok)/3600;
-    }
-    if(ok){
-      if(ui->lineEditLongnitudeDesignator->text().data()[0] == 'W')
-        longnitude *= (-1);
-      else if(ui->lineEditLongnitudeDesignator->text().data()[0] != 'E')
-        ok = false;
-    }
-    QGeoCoordinate userCoordinate;
-    if(ok){
-      qDebug()<<"ITS OK";
-      qDebug()<<"LAT"<<latitude;
-      qDebug()<<"LONG"<<longnitude;
-      userCoordinate.setLatitude(latitude);
-      userCoordinate.setLongitude(longnitude);
-      ui->widgetGPS->setTargetCoordinate(userCoordinate);
-    }
-    ui->widgetGPS->update();
-  }
 }
 void MainWindow::setDisplayStyle(){
   this->setStyleSheet("QProgressBar { border: 1px solid grey; border-radius: 5px; };");
@@ -430,7 +309,6 @@ void MainWindow::checkTelemetryValues(){
   const int value12V = 13000;
   const int value24V = 25000;
   const int valueAccV = 26000;
-  const int current = 3000;
   //5V
   {
     if(this->ui->progressBarMotor16_5V->value()>value5V)
@@ -563,38 +441,7 @@ void MainWindow::checkTelemetryValues(){
       this->ui->progressBarMotor21_AccV->setStyleSheet("QProgressBar::chunk {  border-radius: 5px; background-color: #4444ff}");
 
   }
-  //Current
-  {
-    if(this->ui->progressBarMotor16_Current->value()>current)
-      this->ui->progressBarMotor16_Current->setStyleSheet("QProgressBar::chunk {  border-radius: 5px; background-color: #ff0000;}");
-    else
-      this->ui->progressBarMotor16_Current->setStyleSheet("QProgressBar::chunk {  border-radius: 5px; background-color: #aaaaff}");
 
-    if(this->ui->progressBarMotor17_Current->value()>current)
-      this->ui->progressBarMotor17_Current->setStyleSheet("QProgressBar::chunk {  border-radius: 5px; background-color: #ff0000;}");
-    else
-      this->ui->progressBarMotor17_Current->setStyleSheet("QProgressBar::chunk {  border-radius: 5px; background-color: #aaaaff}");
-
-    if(this->ui->progressBarMotor18_Current->value()>current)
-      this->ui->progressBarMotor18_Current->setStyleSheet("QProgressBar::chunk {  border-radius: 5px; background-color: #ff0000;}");
-    else
-      this->ui->progressBarMotor18_Current->setStyleSheet("QProgressBar::chunk {  border-radius: 5px; background-color: #aaaaff}");
-
-    if(this->ui->progressBarMotor19_Current->value()>current)
-      this->ui->progressBarMotor19_Current->setStyleSheet("QProgressBar::chunk {  border-radius: 5px; background-color: #ff0000;}");
-    else
-      this->ui->progressBarMotor19_Current->setStyleSheet("QProgressBar::chunk {  border-radius: 5px; background-color: #aaaaff}");
-
-    if(this->ui->progressBarMotor20_Current->value()>current)
-      this->ui->progressBarMotor20_Current->setStyleSheet("QProgressBar::chunk {  border-radius: 5px; background-color: #ff0000;}");
-    else
-      this->ui->progressBarMotor20_Current->setStyleSheet("QProgressBar::chunk {  border-radius: 5px; background-color: #aaaaff}");
-
-    if(this->ui->progressBarMotor21_Current->value()>current)
-      this->ui->progressBarMotor21_Current->setStyleSheet("QProgressBar::chunk {  border-radius: 5px; background-color: #ff0000;}");
-    else
-      this->ui->progressBarMotor21_Current->setStyleSheet("QProgressBar::chunk {  border-radius: 5px; background-color: #aaaaff}");
-  }
 }
 //Settings
 //Rover
@@ -604,4 +451,106 @@ void MainWindow::setStatusDiodeRover(bool status){
 //Manipulator
 void MainWindow::setStatusDiodeManipulator(bool status){
   this->ui->statusDiodeManipulator->setStatus(status);
+}
+void MainWindow::readGPSFromUser(){
+  bool ok;
+    double latitude = ui->lineEditLatitudeDegrees->text().toDouble(&ok);
+  if(ok){
+    latitude += ui->lineEditLatitudeMinutes->text().toDouble(&ok)/60;
+  }
+  if(ok){
+    latitude +=ui->lineEditLatitudeSeconds->text().toDouble(&ok)/3600;
+  }
+  if(ok){
+    if(ui->lineEditLatitudeDesignator->text().data()[0] == 'S')
+      latitude *= (-1);
+    else if((QChar)ui->lineEditLatitudeDesignator->text().data()[0] == 'N')
+      ;
+    else
+      ok = false;
+  }
+  double longitude;
+  if(ok){
+    longitude = ui->lineEditLongitudeDegrees->text().toDouble(&ok);
+  }
+  if(ok){
+    longitude += ui->lineEditLongitudeMinutes->text().toDouble(&ok)/60;
+  }
+  if(ok){
+    longitude +=ui->lineEditLongitudeSeconds->text().toDouble(&ok)/3600;
+  }
+  if(ok){
+    if(ui->lineEditLongitudeDesignator->text().data()[0] == 'W')
+      longitude *= (-1);
+    else if(ui->lineEditLongitudeDesignator->text().data()[0] != 'E')
+      ok = false;
+  }
+  QGeoCoordinate userCoordinate;
+  if(ok){
+    qDebug()<<"ITS OK";
+    qDebug()<<"LAT"<<latitude;
+    qDebug()<<"LONG"<<longitude;
+    userCoordinate.setLatitude(latitude);
+    userCoordinate.setLongitude(longitude);
+    ui->widgetGPS->setTargetCoordinate(userCoordinate);
+  }
+  ui->widgetGPS->update();
+}
+void MainWindow::readFromGPS(){
+  QByteArray array = myTcpSocket->readAll();
+  //TO DO
+  qDebug()<<array;
+  if(array[18] == 'A'){
+
+    qDebug()<<"Good Frame";
+    QGeoCoordinate coordinate;
+    //Latitude display and write into coordinate
+    double degrees = (array[20]-48)*10+(array[21]-48);
+    ui->labelGPSLatitudeActualDegrees->setText(QString::number(degrees));
+    double minutes = (array[22]-48)*10+(array[23]-48)+(array[25]-48)*0.1+(array[26]-48)*0.01+(array[27]-48)*0.001+(array[28]-48)*0.001;
+    int minutesInt = minutes;
+    ui->labelGPSLatitudeActualMinutes->setText(QString::number(minutesInt));
+    double secondsDouble = (minutes-minutesInt)*60;
+    ui->labelGPSLatitudeActualSecond->setText(QString::number(secondsDouble));
+    char designator = array[30];
+    ui->labelLatitudeDesignator->setText(QString(designator));
+    double value;
+    if(designator == 'N')
+      value = degrees+minutes/60;
+    if(designator == 'S')
+      value = (-1)*(degrees +minutes/60);
+    coordinate.setLatitude(value);
+
+    //Longnitude display and write into coordinate
+    degrees = (array[32]-48)*100+(array[33]-48)*10+(array[34]-48);
+    ui->labelGPSLongitudeActualDegrees->setText(QString::number(degrees));
+    minutes = (array[35]-48)*10+(array[36]-48)+(array[38]-48)*0.1+(array[39]-48)*0.01+(array[40]-48)*0.001+(array[41]-48)*0.001;
+    minutesInt = minutes;
+    ui->labelGPSLongitudeActualMinutes->setText(QString::number(minutesInt));
+    secondsDouble = (minutes-minutesInt)*60;
+    ui->labelGPSLongitudeActualSecond->setText(QString::number(secondsDouble));
+    designator = array[43];
+    ui->labelLongitudeDesignator->setText(QString(designator));
+
+    if(designator == 'E')
+      value = degrees+minutes/60;
+    if(designator == 'W')
+      value = (-1)*(degrees +minutes/60);
+    coordinate.setLongitude(value);
+
+    ui->widgetGPS->addCoordinate(coordinate);
+  }
+
+
+  myTcpSocket->disconnect();
+  myTcpSocket->deleteLater();
+  myTcpSocket = NULL;
+}
+
+void MainWindow::getGPS(){
+  if(myTcpSocket != NULL)
+    myTcpSocket->deleteLater();
+  myTcpSocket = new QTcpSocket(this);
+  connect(this->myTcpSocket,SIGNAL(readyRead()),this,SLOT(readFromGPS()));
+  myTcpSocket->connectToHost("192.168.1.100", 3000);
 }
